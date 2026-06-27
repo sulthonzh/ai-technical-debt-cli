@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { AITechnicalDebtCLI, AnalysisMode } from './index';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 
 // Handle __dirname and __filename for ESM
@@ -139,7 +139,15 @@ function showVersion(): void {
   console.log(`AI Technical Debt CLI v${packageJson.version}`);
 }
 
-function loadConfig(configPath: string | undefined): any {
+interface LoadedConfig {
+  rootDir?: string;
+  analysisModes?: AnalysisMode[];
+  attributionEnabled?: boolean;
+  outputFormat?: 'json' | 'console' | 'markdown';
+  thresholds?: Record<string, number>;
+}
+
+function loadConfig(configPath: string | undefined): LoadedConfig {
   if (!configPath) {
     const envConfigPath = process.env['AI_DEBT_CONFIG_PATH'];
     configPath = envConfigPath || 'ai-debt.config.json';
@@ -218,10 +226,6 @@ async function main(): Promise<void> {
     console.log(output);
     
     // Exit with appropriate code
-    const severityScore = {
-      [report.severity]: 1
-    };
-    
     if (report.severity === 'critical') {
       process.exit(2); // Critical issues found
     } else if (report.severity === 'high') {

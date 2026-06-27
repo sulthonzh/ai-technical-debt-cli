@@ -55,7 +55,7 @@ export interface AIAttributionPattern {
 export interface PreventionGuardrail {
   name: string;
   enabled: boolean;
-  rule: (code: string, context: any) => boolean;
+  rule: (code: string, context: Record<string, unknown>) => boolean;
   violationMessage: string;
 }
 
@@ -89,7 +89,7 @@ import {
   statSync,
   existsSync
 } from 'fs';
-import { join, extname } from 'path';
+import { join } from 'path';
 
 const AI_PATTERNS = {
   magicNumbers: /[0-9]{3,}/g,
@@ -126,16 +126,25 @@ const SOLID_VIOLATIONS = {
   }
 };
 
-export class TechnicalDebtAnalyzer {
-  private config: {
-    rootDir: string;
-    attributionEnabled: boolean;
-    guardrails: PreventionGuardrail[];
-    thresholds: Record<string, number>;
-  };
+export interface AnalyzerConfig {
+  rootDir: string;
+  attributionEnabled: boolean;
+  guardrails?: PreventionGuardrail[];
+  thresholds?: Record<string, number>;
+  analysisModes?: AnalysisMode[];
+  outputFormat?: 'json' | 'console' | 'markdown';
+}
 
-  constructor(config: any) {
-    this.config = config;
+export class TechnicalDebtAnalyzer {
+  private config: AnalyzerConfig;
+
+  constructor(config: AnalyzerConfig) {
+    this.config = {
+      rootDir: config.rootDir ?? '.',
+      attributionEnabled: config.attributionEnabled ?? true,
+      guardrails: config.guardrails ?? [],
+      thresholds: config.thresholds ?? {}
+    };
   }
 
   async analyze(paths: string[]): Promise<DebtReport> {
@@ -194,12 +203,12 @@ export class TechnicalDebtAnalyzer {
     return { debtItems, aiPatterns };
   }
 
-  private analyzeComprehensionDebt(content: string, filePath: string, lines: string[]): DebtItem[] {
+  private analyzeComprehensionDebt(content: string, filePath: string, _lines: string[]): DebtItem[] {
     const items: DebtItem[] = [];
     
     // Magic numbers
     const magicNumbers = content.match(AI_PATTERNS.magicNumbers) || [];
-    magicNumbers.forEach((match, index) => {
+    magicNumbers.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -214,7 +223,7 @@ export class TechnicalDebtAnalyzer {
 
     // Generic names
     const genericNames = content.match(AI_PATTERNS.genericNames) || [];
-    genericNames.forEach((match, index) => {
+    genericNames.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -229,7 +238,7 @@ export class TechnicalDebtAnalyzer {
 
     // Vague comments
     const vagueComments = content.match(AI_PATTERNS.vagueComments) || [];
-    vagueComments.forEach((match, index) => {
+    vagueComments.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -244,7 +253,7 @@ export class TechnicalDebtAnalyzer {
 
     // Hardcoded values
     const hardcodedValues = content.match(AI_PATTERNS.hardcodedValues) || [];
-    hardcodedValues.forEach((match, index) => {
+    hardcodedValues.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -260,12 +269,12 @@ export class TechnicalDebtAnalyzer {
     return items;
   }
 
-  private analyzeArchitecturalDebt(content: string, filePath: string, lines: string[]): DebtItem[] {
+  private analyzeArchitecturalDebt(content: string, filePath: string, _lines: string[]): DebtItem[] {
     const items: DebtItem[] = [];
 
     // Deep nesting
     const deepNesting = content.match(AI_PATTERNS.deepNesting) || [];
-    deepNesting.forEach((match, index) => {
+    deepNesting.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -280,7 +289,7 @@ export class TechnicalDebtAnalyzer {
 
     // Excessive parameters
     const excessiveParams = content.match(AI_PATTERNS.excessiveParams) || [];
-    excessiveParams.forEach((match, index) => {
+    excessiveParams.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -299,7 +308,7 @@ export class TechnicalDebtAnalyzer {
       if (!pattern) return;
       const violations = content.match(pattern) || [];
       const violationCount = violations.length;
-      if (violationCount / lines.length > config.threshold) {
+      if (violationCount / _lines.length > config.threshold) {
         items.push({
           file: filePath,
           line: 1,
@@ -315,7 +324,7 @@ export class TechnicalDebtAnalyzer {
     return items;
   }
 
-  private analyzeVerificationGaps(content: string, filePath: string, lines: string[]): DebtItem[] {
+  private analyzeVerificationGaps(content: string, filePath: string, _lines: string[]): DebtItem[] {
     const items: DebtItem[] = [];
 
     // Look for AI-generated test patterns
@@ -334,7 +343,7 @@ export class TechnicalDebtAnalyzer {
 
     // Look for hardcoded test values
     const testHardcoded = content.match(/describe\([^)]*\)\s*{[^}]*\b\d+\b[^}]*}/g);
-    testHardcoded?.forEach((match, index) => {
+    testHardcoded?.forEach((match, _index) => {
       const lineNum = content.substring(0, content.indexOf(match)).split('\n').length;
       items.push({
         file: filePath,
@@ -350,7 +359,7 @@ export class TechnicalDebtAnalyzer {
     return items;
   }
 
-  private detectAIPatterns(content: string, filePath: string): AIAttributionPattern[] {
+  private detectAIPatterns(content: string, _filePath: string): AIAttributionPattern[] {
     const patterns: AIAttributionPattern[] = [];
 
     // Long method chains
@@ -389,7 +398,7 @@ export class TechnicalDebtAnalyzer {
     return patterns;
   }
 
-  private generateReport(debtItems: DebtItem[], aiPatterns: AIAttributionPattern[], duration: number): DebtReport {
+  private generateReport(debtItems: DebtItem[], _aiPatterns: AIAttributionPattern[], _duration: number): DebtReport {
     const debtTypes = this.groupDebtByType(debtItems);
     const overallScore = this.calculateOverallScore(debtTypes);
     const severity = this.calculateSeverity(overallScore);
@@ -449,11 +458,7 @@ export class TechnicalDebtAnalyzer {
 
   private calculateOverallScore(debtTypes: DebtType[]): number {
     const totalItems = debtTypes.reduce((sum, type) => sum + type.count, 0);
-    const weights = {
-      comprehension: 0.3,
-      architectural: 0.4,
-      verification: 0.3
-    };
+    if (totalItems === 0) return 100;
 
     const weightedScores = debtTypes.map(type => {
       let weight = 0.3;
@@ -604,7 +609,11 @@ export class TechnicalDebtAnalyzer {
       .map(([tool]) => tool);
   }
 
-  private generateRecommendations(debtTypes: DebtType[], metrics: any): string[] {
+  private generateRecommendations(debtTypes: DebtType[], metrics: {
+    architectural: ArchitecturalMetric;
+    comprehension: ComprehensionScore;
+    verification: VerificationAssessment;
+  }): string[] {
     const recommendations: string[] = [];
 
     if (metrics.architectural.coupling > 0.6) {

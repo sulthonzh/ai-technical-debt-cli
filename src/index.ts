@@ -13,14 +13,6 @@ import {
   PreventionGuardrail
 } from './analyzer';
 
-import {
-  readFileSync,
-  writeFileSync,
-  existsSync,
-  mkdirSync
-} from 'fs';
-import { join, dirname } from 'path';
-
 export interface AITechnicalDebtConfig {
   rootDir: string;
   analysisModes: AnalysisMode[];
@@ -54,7 +46,12 @@ export class AITechnicalDebtCLI {
       ...config
     };
 
-    this.analyzer = new TechnicalDebtAnalyzer(this.config);
+    this.analyzer = new TechnicalDebtAnalyzer({
+      rootDir: this.config.rootDir,
+      attributionEnabled: this.config.attributionEnabled,
+      guardrails: this.config.guardrails,
+      thresholds: this.config.thresholds
+    });
   }
 
   async analyze(paths: string[] = ['.']): Promise<DebtReport> {

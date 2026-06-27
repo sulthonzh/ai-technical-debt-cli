@@ -225,6 +225,21 @@ Traditional code quality tools cannot distinguish between human-created and AI-g
 4. **Actionable Insights**: Provides specific, implementable recommendations
 5. **Tool Attribution**: Helps teams understand which AI tools introduce debt
 
+## 📊 Comparison with Alternatives
+
+| Feature | AI Technical Debt CLI | SonarQube | ESLint | Prettier |
+|---------|----------------------|-----------|---------|---------|
+| AI-generated code detection | ✅ **Pattern-based** | ❌ No | ❌ No | ❌ No |
+| Tool attribution (Copilot/ChatGPT/etc) | ✅ **Yes** | ❌ No | ❌ No | ❌ No |
+| Real-time prevention mode | ✅ **Yes** | ❌ No | ❌ No | ❌ No |
+| Technical debt cost estimation | ✅ **Yes** | ❌ No | ❌ No | ❌ No |
+| Zero dependencies | ✅ **Yes** | ❌ Heavy Java stack | ✅ Yes | ✅ Yes |
+| CLI-first design | ✅ **Native** | ❌ Web UI | ❌ Dev tool only | ❌ Dev tool only |
+| Analysis modes (comprehension/arch/verification) | ✅ **3 modes** | ❌ 1 mode (generic) | ❌ 1 mode (syntax) | ❌ 1 mode (format) |
+| Configuration file support | ✅ **Yes** | ✅ Yes | ✅ Yes | ✅ Yes |
+| Multiple output formats | ✅ **Yes** | ✅ Yes | ❌ No | ❌ No |
+| Learning curve | ⏱️ **< 5 min** | ⏱️ **Days** | ⏱️ **Hours** | ⏱️ **Minutes** |
+
 ## 🔮 Future Roadmap
 
 - [ ] Real-time IDE integration
