@@ -4,6 +4,8 @@ import {
   DebtReport,
   DebtType,
   AIAttribution,
+  AIAttributionPattern,
+  DebtItem,
   ArchitecturalMetric,
   ComprehensionScore,
   VerificationAssessment,
@@ -163,6 +165,6 @@ export class AITechnicalDebtCLI {
   }
 }
 
-export { TechnicalDebtAnalyzer, AnalysisMode, DebtType, DebtSeverity };
-export type { DebtItem, ArchitecturalMetric, ComprehensionScore, VerificationAssessment, AIAttribution, PreventionGuardrail, DebtReport };
+export { TechnicalDebtAnalyzer, DebtSeverity };
+export type { AnalysisMode, DebtType, DebtItem, ArchitecturalMetric, ComprehensionScore, VerificationAssessment, AIAttribution, AIAttributionPattern, PreventionGuardrail, DebtReport };
 export default AITechnicalDebtCLI;

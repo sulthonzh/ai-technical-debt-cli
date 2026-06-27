@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 
 // Handle __dirname and __filename for ESM
-const __filename = import.meta.url.startsWith('file://') ? new URL(import.meta.url).pathname : process.argv[1];
+const __filename = import.meta.url.startsWith('file://') ? new URL(import.meta.url).pathname : process.argv[1] ?? '';
 const __dirname = dirname(__filename);
 
 interface CLIOptions {
@@ -49,8 +49,8 @@ function parseCLIArgs(args: string[]): CLIOptions {
       case '--output':
         if (i + 1 < args.length) {
           const value = args[i + 1];
-          if (['json', 'console', 'markdown'].includes(value)) {
-            options.output = value;
+          if (value && ['json', 'console', 'markdown'].includes(value)) {
+            options.output = value as 'json' | 'console' | 'markdown';
             i++;
           }
         }
@@ -58,7 +58,7 @@ function parseCLIArgs(args: string[]): CLIOptions {
       case '--mode':
         if (i + 1 < args.length) {
           const value = args[i + 1];
-          const modes = value.split(',').map(m => m.trim()) as AnalysisMode[];
+          const modes = (value ?? '').split(',').map(m => m.trim()) as AnalysisMode[];
           const validModes = ['comprehension', 'architectural', 'verification', 'quantification'];
           options.mode = modes.filter(m => validModes.includes(m));
           i++;
@@ -66,18 +66,18 @@ function parseCLIArgs(args: string[]): CLIOptions {
         break;
       case '--config':
         if (i + 1 < args.length) {
-          options.config = args[i + 1];
+          options.config = args[i + 1] ?? '';
           i++;
         }
         break;
       case '--threshold':
         if (i + 1 < args.length) {
-          options.threshold = args[i + 1];
+          options.threshold = args[i + 1] ?? '';
           i++;
         }
         break;
       default:
-        if (!arg.startsWith('-')) {
+        if (arg && !arg.startsWith('-')) {
           if (!options.paths) options.paths = [];
           options.paths.push(arg);
         }
@@ -141,7 +141,7 @@ function showVersion(): void {
 
 function loadConfig(configPath: string | undefined): any {
   if (!configPath) {
-    const envConfigPath = process.env.AI_DEBT_CONFIG_PATH;
+    const envConfigPath = process.env['AI_DEBT_CONFIG_PATH'];
     configPath = envConfigPath || 'ai-debt.config.json';
   }
   
@@ -251,6 +251,6 @@ process.on('uncaughtException', (error) => {
 export { parseCLIArgs, loadConfig, showHelp, showVersion };
 
 // Run if called directly
-if (import.meta.url.startsWith('file://') && new URL(import.meta.url).pathname === process.argv[1]) {
+if (import.meta.url.startsWith('file://') && new URL(import.meta.url).pathname === (process.argv[1] ?? '')) {
   main().catch(console.error);
 }

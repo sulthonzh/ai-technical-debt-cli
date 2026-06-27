@@ -295,7 +295,9 @@ export class TechnicalDebtAnalyzer {
 
     // SOLID violations
     Object.entries(SOLID_VIOLATIONS).forEach(([principle, config]) => {
-      const violations = content.match(config.patterns[0]) || [];
+      const pattern = config.patterns[0];
+      if (!pattern) return;
+      const violations = content.match(pattern) || [];
       const violationCount = violations.length;
       if (violationCount / lines.length > config.threshold) {
         items.push({
@@ -429,18 +431,19 @@ export class TechnicalDebtAnalyzer {
 
   private groupDebtByType(items: DebtItem[]): DebtType[] {
     const grouped = items.reduce((acc, item) => {
-      if (!acc[item.category]) {
-        acc[item.category] = [];
+      const key = item.category;
+      if (!acc[key]) {
+        acc[key] = [];
       }
-      acc[item.category].push(item);
+      acc[key]!.push(item);
       return acc;
     }, {} as Record<string, DebtItem[]>);
 
-    return Object.entries(grouped).map(([name, items]) => ({
+    return Object.entries(grouped).map(([name, groupedItems]) => ({
       name,
-      count: items.length,
-      items,
-      score: this.calculateTypeScore(items)
+      count: groupedItems.length,
+      items: groupedItems,
+      score: this.calculateTypeScore(groupedItems)
     }));
   }
 
@@ -588,10 +591,10 @@ export class TechnicalDebtAnalyzer {
     };
 
     patterns.forEach(pattern => {
-      if (pattern.pattern.includes('longChains')) toolMap['GitHub Copilot'] += 0.3;
-      if (pattern.pattern.includes('excessiveAsync')) toolMap['ChatGPT'] += 0.2;
-      if (pattern.pattern.includes('excessiveImports')) toolMap['Claude'] += 0.25;
-      if (pattern.pattern.includes('hardcoded')) toolMap['Cursor'] += 0.25;
+      if (pattern.pattern.includes('longChains')) toolMap['GitHub Copilot']! += 0.3;
+      if (pattern.pattern.includes('excessiveAsync')) toolMap['ChatGPT']! += 0.2;
+      if (pattern.pattern.includes('excessiveImports')) toolMap['Claude']! += 0.25;
+      if (pattern.pattern.includes('hardcoded')) toolMap['Cursor']! += 0.25;
     });
 
     return Object.entries(toolMap)
