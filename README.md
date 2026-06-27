@@ -1,6 +1,6 @@
 # AI Technical Debt CLI
 
-**Zero-dependency CLI tool for detecting and preventing AI-generated technical debt in codebases.**
+**AI ships code fast. This tool catches the debt it leaves behind. Zero dependencies, four analysis modes, real-time prevention.**
 
 ![npm](https://img.shields.io/npm/v/ai-technical-debt-cli) ![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen) ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg) ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 

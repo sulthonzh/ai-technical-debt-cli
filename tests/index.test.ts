@@ -58,6 +58,37 @@ describe('index.ts exports', () => {
   });
 });
 
+describe('AITechnicalDebtCLI getSeverityEmoji', () => {
+  it('should render all severity levels in console output', async () => {
+    const cli = new AITechnicalDebtCLI({ outputFormat: 'console' });
+    const severities = ['critical', 'high', 'medium', 'low'] as const;
+    for (const severity of severities) {
+      const report: DebtReport = {
+        overallScore: 50,
+        severity: severity as DebtSeverity,
+        totalDebtItems: 1,
+        estimatedCost: 100,
+        affectedFiles: 1,
+        debtTypes: [{
+          name: 'comprehension',
+          count: 1,
+          items: [{ file: 'test.ts', line: 1, message: 'Test', severity: severity as DebtSeverity, category: 'comprehension' }],
+          score: 50
+        }],
+        metrics: {
+          architectural: { coupling: 0.3, cohesion: 0.7, complexity: 0.3, maintainability: 0.7 },
+          comprehension: { clarity: 0.7, readability: 0.7, documentation: 0.7, overall: 0.7 },
+          verification: { testCoverage: 0.7, testEffectiveness: 0.7, brittleness: 0.3, overall: 0.7 }
+        },
+        recommendations: [],
+        timestamp: new Date().toISOString()
+      };
+      const output = await cli.generateReport(report);
+      expect(output).toContain(severity);
+    }
+  });
+});
+
 describe('AITechnicalDebtCLI output formats', () => {
   it('should generate console output from empty report', async () => {
     const cli = new AITechnicalDebtCLI({ outputFormat: 'console' });

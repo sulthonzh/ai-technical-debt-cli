@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - 2026-06-27
+
+### Added
+- 10 new tests (67 total, up from 57): CLI integration tests covering main(), scanAndPrevent, output format verification
+- Severity emoji coverage test for all 4 severity levels
+- Excluded sample.ts fixture from coverage reporting
+
+### Changed
+- Rewrote README hook: "AI ships code fast. This tool catches the debt it leaves behind."
+- Coverage now at 86.47% statements (up from 83.94%), 97.77% functions
+- Clean ESLint pass (0 warnings)
+
+### Fixed
+- sample.ts was incorrectly counted in coverage, dragging overall stats down
+
 ## [Unreleased]
 
 ### Added
