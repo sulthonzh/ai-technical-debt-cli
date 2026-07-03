@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/sulthonzh/ai-technical-debt-cli/issues"
   },
-  "homepage": "https://github.com/sulthonzh/ai-technical-debt-cli#readme"
+  "homepage": "https://github.com/sulthonzh/ai-technical-debt-cli#readme",
+  "overrides": {
+    "esbuild": "0.28.1"
+  }
 }
