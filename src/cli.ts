@@ -241,12 +241,12 @@ async function main(): Promise<void> {
 }
 
 // Handle unhandled rejections
-process.on('unhandledRejection', (reason, promise) => {
+process.on('unhandledRejection', (reason: unknown, promise: unknown) => {
   console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', (error: unknown) => {
   console.error('❌ Uncaught Exception:', error);
   process.exit(1);
 });
