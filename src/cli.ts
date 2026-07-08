@@ -252,7 +252,7 @@ process.on('uncaughtException', (error: unknown) => {
 });
 
 // Export for testing
-export { parseCLIArgs, loadConfig, showHelp, showVersion };
+export { parseCLIArgs, loadConfig, showHelp, showVersion, main };
 
 // Run if called directly
 if (import.meta.url.startsWith('file://') && new URL(import.meta.url).pathname === (process.argv[1] ?? '')) {

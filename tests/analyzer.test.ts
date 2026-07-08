@@ -184,8 +184,6 @@ describe('TechnicalDebtAnalyzer', () => {
       writeFileSync(join(testDir, 'file.md'), '# Magic number 999\n');
       const result = await analyzer.analyze([testDir]);
       // .txt and .md files should not be analyzed
-      const comprehension = result.debtTypes.find(t => t.name === 'comprehension');
-      const hasItems = comprehension?.items.length ?? 0;
       // If only non-code files, should have 0 items from them
       expect(result.totalDebtItems).toBe(0);
     });

@@ -5,15 +5,6 @@ import {
   DebtSeverity
 } from '../src/index';
 import type {
-  AnalysisMode,
-  DebtType,
-  DebtItem,
-  ArchitecturalMetric,
-  ComprehensionScore,
-  VerificationAssessment,
-  AIAttribution,
-  AIAttributionPattern,
-  PreventionGuardrail,
   DebtReport
 } from '../src/index';
 

@@ -23,6 +23,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- 29 new tests (96 total, up from 67): main-integration tests covering main(), verbose, prevention, JSON/markdown output, config/threshold/attribution flags; branch-coverage tests for generateRecommendations, getSeverityEmoji default, aiAttribution rendering, >3 items truncation, scanAndPrevent
+- Exported `main` function from cli.ts for testability
+
+### Changed
+- Coverage improved: 91.75% stmts (was 81.11%), 81.22% branches (was 66.66%), 93.37% lines (was 81.84%)
+- All coverage thresholds now above 80% (branches were below 80%)
+- index.ts at 100% statements, 91.3% branches
+- Cleaned unused imports and variables in test files for zero ESLint errors
+
+### Added
 - ESLint flat config with typescript-eslint v8 for strict type checking
 - Test coverage reporting with c8 (@vitest/coverage-v8)
 - 40+ new tests:
