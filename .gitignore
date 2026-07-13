@@ -57,7 +57,9 @@ docs/api/
 
 # Example outputs
 *.report
-*.analysis__pycache__/
 .venv/
 *.egg-info/
+
+# Python
+__pycache__/
 .mypy_cache/
