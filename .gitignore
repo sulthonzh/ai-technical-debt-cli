@@ -63,3 +63,4 @@ docs/api/
 # Python
 __pycache__/
 .mypy_cache/
+.env.*
