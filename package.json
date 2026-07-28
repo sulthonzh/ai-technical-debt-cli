@@ -57,5 +57,8 @@
   "homepage": "https://github.com/sulthonzh/ai-technical-debt-cli#readme",
   "overrides": {
     "esbuild": "0.28.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
