@@ -1,6 +1,6 @@
 # STATUS.md — ai-technical-debt-cli
 
-**Audit Date:** 2026-08-01 (re-audited from 2026-07-22)
+**Audit Date:** 2026-08-03 (re-audited from 2026-08-01)
 **Status:** ✅ EXCEPTIONAL
 
 ## Exceptional Checklist (13/13)
@@ -10,11 +10,11 @@
 - [x] **All tests GREEN** — 161/161 passed (100% pass rate)
 - [x] **Test coverage >= 80% on core logic** — 97.34% stmts, 91.07% branches, 97.61% funcs, 97.98% lines
 - [x] **Zero TypeScript errors** — strict mode passes clean
-- [x] **Zero ESLint warnings** — 0 errors, 0 warnings
+- [x] **Zero ESLint warnings** — 0 errors, 0 warnings (fixed: pinned typescript ^6.0.0, was crashing with TS v7)
 - [x] **No TODO/FIXME comments** — one regex pattern match in analyzer.ts is intentional detection rule, not code debt
 - [x] **At least 3 real-world examples** — CI/CD pipeline gate, pre-commit hook, IDE integration
 - [x] **CHANGELOG up to date** — [1.0.2] released 2026-06-27, [Unreleased] with coverage improvements
-- [x] **Modern stack** — Node >=18, TypeScript 5.x, vitest 4.1.9, zero runtime deps
+- [x] **Modern stack** — Node >=18, TypeScript 6.x, vitest 4.1.9, zero runtime deps
 - [x] **Unique value prop** — AI-specific debt detection (AI attribution, tool identification, pattern matching for AI-generated code patterns)
 - [x] **Performance** — O(n) file scanning, no O(n²) loops found
 - [x] **Security** — No hardcoded secrets, no SQL, input validation via CLI arg parsing
