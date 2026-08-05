@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TechnicalDebtAnalyzer, AITechnicalDebtCLI, DebtSeverity } from '../src/index';
-import type { DebtItem, DebtReport } from '../src/index';
+import type { DebtReport } from '../src/index';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import { join } from 'path';
 
@@ -149,7 +149,7 @@ describe('Branch Coverage: generateRecommendations all branches', () => {
   });
 
   it('should recommend increasing test coverage when testCoverage < 0.8', async () => {
-    const file = join(testDir, 'untested.ts');
+    const _file = join(testDir, 'untested.ts');
     // Need verification items. Files in src/ or lib/ without test files get flagged.
     // Create a file in a 'src' subdirectory
     const srcDir = join(testDir, 'src');

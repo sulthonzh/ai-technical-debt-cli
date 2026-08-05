@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { parseCLIArgs } from '../src/cli';
-import { writeFileSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { writeFileSync, mkdirSync, rmSync } from 'fs';
 import { join } from 'path';
 import { tmpdir } from 'os';
 

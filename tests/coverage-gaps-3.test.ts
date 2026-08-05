@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TechnicalDebtAnalyzer, DebtSeverity } from '../src/analyzer';
-import { AITechnicalDebtCLI } from '../src/index';
 import { join } from 'node:path';
 import { mkdirSync, writeFileSync, existsSync, rmSync, chmodSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -77,7 +76,7 @@ describe('Coverage Gaps 3: calculateSeverity boundaries + analyzer catch + index
     const subDir = join(testDir, 'subdir');
     mkdirSync(subDir);
     // analyze() calls readFileSync on each path — a directory will throw
-    const analyzer = new TechnicalDebtAnalyzer({ rootDir: testDir });
+    const _analyzer = new TechnicalDebtAnalyzer({ rootDir: testDir });
     // analyze() internally calls getAllFiles which skips directories,
     // but if we pass a directory directly to analyzeFile it would throw
     // Let's test via a symlink that points to itself or similar

@@ -1,6 +1,6 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { TechnicalDebtAnalyzer, AITechnicalDebtCLI, DebtSeverity } from '../src/index';
-import type { DebtReport, DebtType, DebtSeverity as DS } from '../src/index';
+import type { DebtReport } from '../src/index';
 import { existsSync, mkdirSync, writeFileSync, rmSync } from 'fs';
 import { join } from 'path';
 
