@@ -44,10 +44,6 @@ temp/
 test-temp/
 *.tmp
 
-# Package manager files
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
 
 # Testing
 .jest/
